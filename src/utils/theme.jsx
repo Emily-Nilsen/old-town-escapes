@@ -1,0 +1,16 @@
+export const theme = {
+  white: '#ffffff',
+  'stone-50': '#fafaf9',
+  'stone-100': '#f5f5f4',
+  'stone-500': '#78716c',
+  'stone-600': '#57534e',
+  'stone-700': '#44403c',
+  'stone-800': '#292524',
+  'stone-900': '#1c1917',
+  'amber-50': '#fffbeb',
+  'amber-100': '#fef3c7',
+  'rose-400': '#fb7185',
+  'rose-500': '#f43f5e',
+  'rose-600': '#e11d48',
+  'rose-700': '#be123c',
+}
