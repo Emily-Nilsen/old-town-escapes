@@ -8,7 +8,7 @@ export const mapMainMenuItems = (menuItems) => {
     subMenuItems: (menuItem.items || []).map((subMenuItem) => ({
       id: uuid(),
       label: subMenuItem.label,
-      destination: menuItem.menuItem.destination?.uri,
+      destination: subMenuItem.destination?.uri,
     })),
   }))
 }
