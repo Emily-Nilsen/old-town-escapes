@@ -8,9 +8,10 @@ export const Cover = ({ children, background }) => {
         priority
         className="object-cover"
         fill
-        alt="The Beauty of Europe"
+        alt="The beauty of Europe"
         src={background}
       />
+
       <Container>
         <div className="relative z-10">{children}</div>
       </Container>

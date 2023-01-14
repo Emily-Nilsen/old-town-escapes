@@ -60,47 +60,7 @@ export const MainMenu = ({
   callToActionLabel,
   callToActionDestination,
 }) => {
-  const NavLinks = () => {
-    let [hoveredIndex, setHoveredIndex] = useState(null)
-
-    return (items || []).map((item, index) => (
-      <Link
-        key={item.id}
-        href={item.destination}
-        className="group relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-stone-700 transition-colors delay-150 hover:text-stone-900 hover:delay-[0ms]"
-        onMouseEnter={() => setHoveredIndex(index)}
-        onMouseLeave={() => setHoveredIndex(null)}
-      >
-        <AnimatePresence>
-          {hoveredIndex === index && (
-            <motion.span
-              className="absolute inset-0 rounded-lg bg-amber-50"
-              layoutId="hoverBackground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.15 } }}
-              exit={{
-                opacity: 0,
-                transition: { duration: 0.15, delay: 0.2 },
-              }}
-            />
-          )}
-        </AnimatePresence>
-        <span className="relative z-10">{item.label}</span>
-        {!!item.subMenuItems?.length && (
-          <div className="absolute left-0 top-full -mt-1.5 hidden w-max flex-col space-y-1 rounded-lg bg-white p-3 text-sm text-stone-600 transition delay-150 duration-300 ease-in-out group-hover:flex">
-            {item.subMenuItems.map((subMenuItem) => (
-              <div
-                className="px-3 py-2 transition duration-300 ease-out rounded-lg hover:bg-amber-50 hover:text-stone-900"
-                key={subMenuItem.id}
-              >
-                <Link href={subMenuItem.destination}>{subMenuItem.label}</Link>
-              </div>
-            ))}
-          </div>
-        )}
-      </Link>
-    ))
-  }
+  let [hoveredIndex, setHoveredIndex] = useState(null)
 
   return (
     <header className="bg-amber-100">
@@ -114,7 +74,54 @@ export const MainMenu = ({
             </div>
 
             <div className="hidden lg:flex lg:gap-10">
-              <NavLinks />
+              {(items || []).map((item, index) => (
+                <div
+                  className="group relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-stone-700 transition-colors delay-150 hover:text-stone-900 hover:delay-[0ms]"
+                  key={item.id}
+                >
+                  <div>
+                    <Link
+                      href={item.destination}
+                      className="group relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-stone-700 transition-colors delay-150 hover:text-stone-900 hover:delay-[0ms]"
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                      <AnimatePresence>
+                        {hoveredIndex === index && (
+                          <motion.span
+                            className="absolute inset-0 rounded-lg bg-amber-50"
+                            layoutId="hoverBackground"
+                            initial={{ opacity: 0 }}
+                            animate={{
+                              opacity: 1,
+                              transition: { duration: 0.15 },
+                            }}
+                            exit={{
+                              opacity: 0,
+                              transition: { duration: 0.15, delay: 0.2 },
+                            }}
+                          />
+                        )}
+                      </AnimatePresence>
+                      <span className="relative z-10">{item.label}</span>
+                    </Link>
+                  </div>
+                  {!!item.subMenuItems?.length && (
+                    <div className="absolute left-0 top-full -mb-1.5 hidden w-max flex-col space-y-1 rounded-lg bg-white p-3 text-sm text-stone-600 transition delay-150 duration-300 ease-in-out group-hover:flex">
+                      {item.subMenuItems.map((subMenuItem) => (
+                        <div
+                          className="px-3 py-2 transition duration-300 ease-out rounded-lg hover:bg-amber-50 hover:text-stone-900"
+                          key={subMenuItem.id}
+                        >
+                          <Link href={subMenuItem.destination}>
+                            {subMenuItem.label}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex items-center gap-6">
@@ -181,11 +188,12 @@ export const MainMenu = ({
                             ))}
                           </div>
                           <div className="flex flex-col gap-4 mt-8">
-                            <Link href={callToActionDestination}>
-                              <Button className="w-full">
-                                {callToActionLabel}
-                              </Button>
-                            </Link>
+                            <ButtonLink
+                              href={callToActionDestination}
+                              className="w-full"
+                            >
+                              {callToActionLabel}
+                            </ButtonLink>
                           </div>
                         </Popover.Panel>
                       </>

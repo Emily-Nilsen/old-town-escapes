@@ -7,7 +7,6 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { TextField } from '@/components/Fields'
 import { Logomark } from '@/components/Logo'
-import { NavLinks } from '@/components/NavLinks'
 import qrCode from '@/images/qr-code.svg'
 import OldTownLogo from '@/images/old-town-escapes.svg'
 
@@ -24,52 +23,12 @@ function QrCodeBorder(props) {
 }
 
 export function FooterMenu({ items }) {
-  const NavLinks = () => {
-    let [hoveredIndex, setHoveredIndex] = useState(null)
-
-    return (items || []).map((item, index) => (
-      <Link
-        key={item.id}
-        href={item.destination}
-        className="group relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-stone-700 transition-colors delay-150 hover:text-stone-900 hover:delay-[0ms]"
-        onMouseEnter={() => setHoveredIndex(index)}
-        onMouseLeave={() => setHoveredIndex(null)}
-      >
-        <AnimatePresence>
-          {hoveredIndex === index && (
-            <motion.span
-              className="absolute inset-0 rounded-lg bg-amber-50"
-              layoutId="hoverBackground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.15 } }}
-              exit={{
-                opacity: 0,
-                transition: { duration: 0.15, delay: 0.2 },
-              }}
-            />
-          )}
-        </AnimatePresence>
-        <span className="relative z-10">{item.label}</span>
-        {!!item.subMenuItems?.length && (
-          <div className="absolute left-0 bottom-full -mt-1.5 hidden w-max flex-col space-y-1 rounded-lg bg-amber-100 p-3 text-sm text-stone-600 transition delay-150 duration-300 ease-in-out group-hover:flex">
-            {item.subMenuItems.map((subMenuItem) => (
-              <div
-                className="px-3 py-2 transition duration-300 ease-out rounded-lg hover:bg-white hover:text-stone-900"
-                key={subMenuItem.id}
-              >
-                <Link href={subMenuItem.destination}>{subMenuItem.label}</Link>
-              </div>
-            ))}
-          </div>
-        )}
-      </Link>
-    ))
-  }
+  let [hoveredIndex, setHoveredIndex] = useState(null)
 
   return (
     <footer className="border-t border-stone-200">
       <Container>
-        <div className="flex flex-col items-start justify-between pt-16 pb-6 gap-y-12 lg:flex-row lg:items-center lg:py-16">
+        <div className="flex flex-col items-start justify-between gap-y-12 pt-16 pb-6 lg:flex-row lg:items-center lg:py-16">
           <div>
             <div className="flex items-center text-stone-900">
               <Link href="/" aria-label="Home">
@@ -84,13 +43,60 @@ export function FooterMenu({ items }) {
                 </p>
               </div>
             </div>
-            <nav className="flex gap-8 mt-11">
-              <NavLinks />
+            <nav className="mt-11 flex gap-8">
+              {(items || []).map((item, index) => (
+                <div
+                  className="group relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-stone-700 transition-colors delay-150 hover:text-stone-900 hover:delay-[0ms]"
+                  key={item.id}
+                >
+                  <div>
+                    <Link
+                      href={item.destination}
+                      className="group relative -my-2 -mx-3 rounded-lg px-3 py-2 text-sm text-stone-700 transition-colors delay-150 hover:text-stone-900 hover:delay-[0ms]"
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                      <AnimatePresence>
+                        {hoveredIndex === index && (
+                          <motion.span
+                            className="absolute inset-0 rounded-lg bg-amber-50"
+                            layoutId="hoverBackground"
+                            initial={{ opacity: 0 }}
+                            animate={{
+                              opacity: 1,
+                              transition: { duration: 0.15 },
+                            }}
+                            exit={{
+                              opacity: 0,
+                              transition: { duration: 0.15, delay: 0.2 },
+                            }}
+                          />
+                        )}
+                      </AnimatePresence>
+                      <span className="relative z-10">{item.label}</span>
+                    </Link>
+                  </div>
+                  {!!item.subMenuItems?.length && (
+                    <div className="absolute left-0 bottom-full -mt-1.5 hidden w-max flex-col space-y-1 rounded-lg bg-amber-100 p-3 text-sm text-stone-600 transition delay-150 duration-300 ease-in-out group-hover:flex">
+                      {item.subMenuItems.map((subMenuItem) => (
+                        <div
+                          className="rounded-lg px-3 py-2 transition duration-300 ease-out hover:bg-white hover:text-stone-900"
+                          key={subMenuItem.id}
+                        >
+                          <Link href={subMenuItem.destination}>
+                            {subMenuItem.label}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </nav>
           </div>
-          <div className="relative flex items-center self-stretch p-4 -mx-4 transition-colors group hover:bg-stone-100 sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6">
-            <div className="relative flex items-center justify-center flex-none w-24 h-24">
-              <QrCodeBorder className="absolute inset-0 w-full h-full transition-colors stroke-stone-300 group-hover:stroke-rose-500" />
+          <div className="group relative -mx-4 flex items-center self-stretch p-4 transition-colors hover:bg-stone-100 sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6">
+            <div className="relative flex h-24 w-24 flex-none items-center justify-center">
+              <QrCodeBorder className="absolute inset-0 h-full w-full stroke-stone-300 transition-colors group-hover:stroke-rose-500" />
               <Image src={qrCode} alt="" unoptimized />
             </div>
             <div className="ml-8 lg:w-64">
@@ -106,17 +112,17 @@ export function FooterMenu({ items }) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center pt-8 pb-12 border-t border-stone-200 md:flex-row-reverse md:justify-between md:pt-6">
-          <form className="flex justify-center w-full md:w-auto">
+        <div className="flex flex-col items-center border-t border-stone-200 pt-8 pb-12 md:flex-row-reverse md:justify-between md:pt-6">
+          <form className="flex w-full justify-center md:w-auto">
             <TextField
               type="email"
               aria-label="Email address"
               placeholder="Email address"
               autoComplete="email"
               required
-              className="min-w-0 w-60 shrink"
+              className="w-60 min-w-0 shrink"
             />
-            <Button type="submit" color="rose" className="flex-none ml-4">
+            <Button type="submit" color="rose" className="ml-4 flex-none">
               <span className="hidden lg:inline">Join our newsletter</span>
               <span className="lg:hidden">Join newsletter</span>
             </Button>

@@ -17,10 +17,15 @@ export const getStaticPaths = async () => {
             uri
           }
         }
+        properties {
+          nodes {
+            uri
+          }
+        }
       }
     `,
   })
-  const paths = data.pages.nodes.map((page) => ({
+  const paths = [...data.pages.nodes, ...data.properties.nodes].map((page) => ({
     params: {
       slug: page.uri.substring(1, page.uri.length - 1).split('/'),
     },
